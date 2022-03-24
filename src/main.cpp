@@ -2,7 +2,7 @@
 
 int main()
 {
-    printf("nvbox");
+    printf("nvbox\n");
 
     return 0;
 }
