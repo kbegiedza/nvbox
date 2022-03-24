@@ -1,8 +1,10 @@
 #include <cstdio>
 
+#include <nvbox/utility.hpp>
+
 int main()
 {
-    printf("nvbox\n");
+    nvbox::describeCuda();
 
     return 0;
 }

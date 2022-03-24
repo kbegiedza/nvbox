@@ -1,8 +1,18 @@
-cmake_minimum_required (VERSION 3.9)
+cmake_minimum_required (VERSION 3.16)
 
-project(nvbox)
+project(
+    nvbox
+    VERSION 0.0.1
+    LANGUAGES CUDA CXX)
 
-set(CMAKE_CXX_STANDARD 11)
+if(NOT DEFINED CMAKE_CUDA_STANDARD)
+set(CMAKE_CUDA_STANDARD 11)
+set(CMAKE_CUDA_STANDARD_REQUIRED ON)
+endif()
+
+if(NOT DEFINED CMAKE_CXX_STANDARD)
+set(CMAKE_CXX_STANDARD 20)
+endif()
 
 set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
 set(SOURCE_DIR "${PROJECT_SOURCE_DIR}/src")
@@ -12,7 +22,9 @@ include_directories("${SOURCE_DIR}")
 
 file(GLOB ALL_SRC
     "${INCLUDE_DIR}/*.hpp"
+    "${SOURCE_DIR}/*.c"
     "${SOURCE_DIR}/*.cpp"
+    "${SOURCE_DIR}/*.cu"
     )
 
 add_executable(nvbox "${ALL_SRC}")
