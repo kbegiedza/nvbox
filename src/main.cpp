@@ -5,6 +5,7 @@
 int main()
 {
     nvbox::describeCuda();
+    nvbox::describeCudaDevices();
 
     return 0;
 }
