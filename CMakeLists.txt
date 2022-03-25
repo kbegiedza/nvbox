@@ -17,6 +17,7 @@ endif()
 set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
 set(SOURCE_DIR "${PROJECT_SOURCE_DIR}/src")
 
+include_directories("${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES}")
 include_directories("${INCLUDE_DIR}")
 include_directories("${SOURCE_DIR}")
 
@@ -25,6 +26,8 @@ file(GLOB ALL_SRC
     "${SOURCE_DIR}/*.c"
     "${SOURCE_DIR}/*.cpp"
     "${SOURCE_DIR}/*.cu"
-    )
+)
 
 add_executable(nvbox "${ALL_SRC}")
+
+target_link_libraries(nvbox)
