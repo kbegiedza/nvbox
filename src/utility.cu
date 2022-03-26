@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <string>
 
-#include <nvbox/utility.hpp>
+#include "nvbox/utility.cuh"
 
 void nvbox::describeCuda()
 {

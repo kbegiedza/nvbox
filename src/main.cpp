@@ -1,6 +1,6 @@
 #include <cstdio>
 
-#include <nvbox/utility.hpp>
+#include "nvbox/utility.cuh"
 
 int main()
 {

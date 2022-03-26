@@ -23,8 +23,8 @@ include_directories("${SOURCE_DIR}")
 
 file(GLOB ALL_SRC
     "${INCLUDE_DIR}/*.hpp"
-    "${SOURCE_DIR}/*.c"
     "${SOURCE_DIR}/*.cpp"
+    "${INCLUDE_DIR}/*.cuh"
     "${SOURCE_DIR}/*.cu"
 )
 
