@@ -1,5 +1,5 @@
-#ifndef NVBOX_UTILITY_HPP_
-#define NVBOX_UTILITY_HPP_
+#ifndef NVBOX_UTILITY_CUH_
+#define NVBOX_UTILITY_CUH_
 
 #include <cuda_runtime.h>
 
@@ -12,4 +12,4 @@ namespace nvbox
     void handleCudaError(cudaError_t error);
 }
 
-#endif //! NVBOX_UTILITY_HPP_
+#endif //! NVBOX_UTILITY_CUH_
