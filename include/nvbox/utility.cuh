@@ -1,7 +1,9 @@
 #ifndef NVBOX_UTILITY_CUH_
 #define NVBOX_UTILITY_CUH_
 
-#include <cuda_runtime.h>
+#include "cuda.h"
+#include "cuda_runtime.h"
+#include "device_launch_parameters.h"
 
 namespace nvbox
 {
@@ -12,4 +14,4 @@ namespace nvbox
     void handleCudaError(cudaError_t error);
 }
 
-#endif //! NVBOX_UTILITY_CUH_
+#endif // NVBOX_UTILITY_CUH_

@@ -2,6 +2,7 @@
 
 #include "nvbox/Stopwatch.hpp"
 #include "nvbox/utility.cuh"
+#include "nvbox/demo.cuh"
 
 int main()
 {
@@ -9,6 +10,8 @@ int main()
 
     nvbox::describeCuda();
     nvbox::describeCudaDevices();
+
+    nvbox::RunAddDemo();
 
     sw.Stop();
 
