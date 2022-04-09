@@ -10,7 +10,9 @@
             "preLaunchTask": "build Debug",
             "request": "launch",
             "program": "${workspaceFolder}/build/nvbox",
-            "args": [],
+            "args": [
+                "--demo"
+            ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
