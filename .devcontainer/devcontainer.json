@@ -27,5 +27,6 @@
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "gcc -v",
 	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-	"remoteUser": "vscode"
+	"remoteUser": "vscode",
+	"postCreateCommand": "/bin/bash /workspaces/nvbox/docs/install.sh"
 }
