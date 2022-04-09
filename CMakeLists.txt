@@ -1,5 +1,15 @@
 cmake_minimum_required (VERSION 3.16)
 
+## Setup dependencies
+
+set(EXTERNAL_LIB_HEADERS
+    "depends/argparse/include"
+)
+
+include_directories(${EXTERNAL_LIB_HEADERS})
+
+## Setup project
+
 project(
     nvbox
     VERSION 0.0.1
