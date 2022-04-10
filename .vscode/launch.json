@@ -7,7 +7,7 @@
         {
             "name": "Debug",
             "type": "lldb",
-            "preLaunchTask": "build Debug",
+            "preLaunchTask": "build",
             "request": "launch",
             "program": "${workspaceFolder}/build/nvbox",
             "args": [
