@@ -12,7 +12,8 @@ env:
 
 jobs:
   build:
-    container: nvcr.io/nvidia/cuda:11.6.0-devel-ubuntu20.04
+    container:
+      image: nvcr.io/nvidia/cuda:11.6.0-devel-ubuntu20.04
 
     steps:
     - uses: actions/checkout@v3
