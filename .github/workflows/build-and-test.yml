@@ -10,7 +10,7 @@ env:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container: ghcr.io/kbegiedza/cuda:11.6.0-sdk
 
     steps:
