@@ -12,8 +12,8 @@ ARG COMMON_SCRIPT_SHA="dev-mode"
 RUN apt-get update \
     && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends \
-        curl \
-        ca-certificates \
+        curl ca-certificates \
+        build-essential cmake cppcheck valgrind clang lldb llvm gdb \
         2>&1 \
     ## Download & execute vscode common setup
     && curl -sSL  ${COMMON_SCRIPT_SOURCE} -o /tmp/common-setup.sh \
@@ -21,7 +21,6 @@ RUN apt-get update \
     && /bin/bash /tmp/common-setup.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" \
     ## Post installation clean up
     && rm /tmp/common-setup.sh \
-    && apt-get install -y build-essential cmake cppcheck valgrind clang lldb llvm gdb \
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
