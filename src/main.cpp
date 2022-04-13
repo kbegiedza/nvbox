@@ -1,4 +1,8 @@
+#include <chrono>
+#include <thread>
 #include <iostream>
+
+#include <signal.h>
 
 #include "nvbox/Stopwatch.hpp"
 #include "nvbox/utility.cuh"
@@ -12,30 +16,34 @@ argparse::ArgumentParser create_parser()
 
     parser.add_description("Toolbox for cuda");
 
-    parser.add_argument("--demo")
-        .help("Run simple demo")
-        .default_value(false)
-        .implicit_value(true);
+    parser.add_argument("-r", "--refresh")
+        .help("Refresh internal in milliseconds [ms]\nDefault value = 1000 [ms]")
+        .scan<'i', int>()
+        .default_value(1000);
 
     return parser;
 }
 
-void RunDemo()
+void handle_sigint(sig_atomic_t s)
 {
-    auto sw = nvbox::Stopwatch::StartNew();
+    std::exit(0);
+}
 
-    nvbox::describeCuda();
-    nvbox::describeCudaDevices();
+void attach_to_signals()
+{
+    signal(SIGINT, handle_sigint);
+}
 
-    nvbox::RunAddDemo();
-
-    sw.Stop();
-
-    std::cout << std::endl
-              << "Finished in: "
-              << sw.GetElapsedTime()
-              << " [ms]"
-              << std::endl;
+// TODO: use cli framework
+void clear_console()
+{
+#if defined _WIN32
+    system("cls");
+#elif defined(__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
+    std::cout << "\x1B[2J\x1B[H";
+#elif defined(__APPLE__)
+    system("clear");
+#endif
 }
 
 int main(int argc, char *argv[])
@@ -53,10 +61,22 @@ int main(int argc, char *argv[])
         std::exit(1);
     }
 
-    if (parser["--demo"] == true)
+    attach_to_signals();
+
+    auto refreshTime = parser.get<int>("--refresh");
+
+    std::chrono::milliseconds sleepTime(refreshTime);
+
+    while (true)
     {
-        RunDemo();
+        clear_console();
+
+        std::cout << "1" << std::endl;
+
+        std::this_thread::sleep_for(sleepTime);
     }
+
+    std::cout << "Done" << std::endl;
 
     return 0;
 }

@@ -11,7 +11,8 @@
             "request": "launch",
             "program": "${workspaceFolder}/build/nvbox",
             "args": [
-                "--demo"
+                "-r",
+                "500"
             ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
