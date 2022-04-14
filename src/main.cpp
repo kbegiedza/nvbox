@@ -6,7 +6,6 @@
 
 #include "nvbox/Stopwatch.hpp"
 #include "nvbox/utility.cuh"
-#include "nvbox/demo.cuh"
 
 #include <argparse/argparse.hpp>
 
