@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/cuda:11.6.0-devel-ubuntu20.04
+FROM ghcr.io/kbegiedza/cuda:11.6.0-sdk
 
 ARG USERNAME=vscode
 ARG USER_UID=1000
@@ -10,13 +10,6 @@ ARG COMMON_SCRIPT_SOURCE="https://raw.githubusercontent.com/microsoft/vscode-dev
 ARG COMMON_SCRIPT_SHA="dev-mode"
 
 RUN apt-get update \
-    && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends \
-        curl ca-certificates \
-        build-essential cmake cppcheck valgrind clang lldb llvm gdb \
-        2>&1 \
-    ## Download & execute vscode common setup
-    && curl -sSL  ${COMMON_SCRIPT_SOURCE} -o /tmp/common-setup.sh \
     && ([ "${COMMON_SCRIPT_SHA}" = "dev-mode" ] || (echo "${COMMON_SCRIPT_SHA} */tmp/common-setup.sh" | sha256sum -c -)) \
     && /bin/bash /tmp/common-setup.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" \
     ## Post installation clean up
