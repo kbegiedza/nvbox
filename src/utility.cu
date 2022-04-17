@@ -50,6 +50,10 @@ void nvbox::describeCudaDevices()
     }
 }
 
+void nvbox::describeTemperatures()
+{
+}
+
 void nvbox::handleCudaError(cudaError_t error)
 {
     if (error != cudaSuccess)

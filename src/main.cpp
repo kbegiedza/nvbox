@@ -2,6 +2,7 @@
 #include <thread>
 #include <iostream>
 
+#include <nvml.h>
 #include <signal.h>
 
 #include "nvbox/Stopwatch.hpp"
@@ -25,6 +26,8 @@ argparse::ArgumentParser create_parser()
 
 void handle_sigint(sig_atomic_t s)
 {
+    nvmlShutdown();
+
     std::exit(0);
 }
 
@@ -66,14 +69,75 @@ int main(int argc, char *argv[])
 
     std::chrono::milliseconds sleepTime(refreshTime);
 
+    nvmlInit_v2();
+
     while (true)
     {
         clear_console();
 
         std::cout << "1" << std::endl;
 
+        uint32_t deviceCount = 0;
+
+        nvmlReturn_t nvmlOpStatus;
+        nvmlOpStatus = nvmlDeviceGetCount_v2(&deviceCount);
+
+        if (nvmlOpStatus != nvmlReturn_t::NVML_SUCCESS)
+        {
+            std::cerr << "Unable to query device count\n"
+                      << nvmlOpStatus
+                      << std::endl;
+
+            break;
+        }
+
+        if (deviceCount <= 0)
+        {
+            std::cerr << "Unable to find any device"
+                      << std::endl;
+
+            break;
+        }
+
+        std::vector<nvmlDevice_t> devices;
+
+        for (uint32_t deviceId = 0; deviceId < deviceCount; ++deviceId)
+        {
+            nvmlDevice_t currentDevice;
+            nvmlOpStatus = nvmlDeviceGetHandleByIndex_v2(deviceId, &currentDevice);
+            if (nvmlOpStatus != nvmlReturn_t::NVML_SUCCESS)
+            {
+                std::cerr << "Unable to get handle to device"
+                          << deviceId
+                          << std::endl
+                          << nvmlOpStatus
+                          << std::endl;
+
+                break;
+            }
+
+            devices.push_back(std::move(currentDevice));
+        }
+
+        for (auto &&device : devices)
+        {
+
+            uint32_t temp, temp_count;
+
+            nvmlDeviceGetTemperature(device, nvmlTemperatureSensors_t::NVML_TEMPERATURE_GPU, &temp);
+            nvmlDeviceGetTemperature(device, nvmlTemperatureSensors_t::NVML_TEMPERATURE_COUNT, &temp_count);
+
+            std::cout << "Device" << device << " " << temp << " " << temp_count << std::endl;
+        }
+
+        // nvmlDeviceGetHandleByIndex_v2();
+
+        // nvmlTemperature();
+
         std::this_thread::sleep_for(sleepTime);
     }
+
+    nvmlShutdown();
 
     std::cout << "Done" << std::endl;
 
