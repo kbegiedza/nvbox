@@ -1,4 +1,4 @@
-FROM ghcr.io/kbegiedza/cuda:11.6.0-sdk
+FROM ghcr.io/harbourb/cuda/sdk:11.6.0
 
 ARG USERNAME=vscode
 ARG USER_UID=1000
