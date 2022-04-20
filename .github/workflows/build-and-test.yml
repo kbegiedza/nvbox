@@ -18,6 +18,7 @@ jobs:
 
     - name: Checkout submodules
       run: |
+        git config --global --add safe.directory /__w/nvbox/nvbox
         git submodule update --init --recursive
 
     - name: Configure CMake

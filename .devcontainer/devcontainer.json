@@ -2,10 +2,7 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.224.3/containers/cpp
 {
 	"name": "C++",
-	"build": {
-		"dockerfile": "Dockerfile",
-		"args": {}
-	},
+	"image": "ghcr.io/harbourb/cuda/sdk-vscode:11.6.0",
 	"runArgs": [
 		"--gpus=all",
 		"--cap-add=SYS_PTRACE",
