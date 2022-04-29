@@ -89,6 +89,7 @@ int main(int argc, char *argv[])
         service->Update();
         view->Render();
 
+        shouldExecute = false;
         std::this_thread::sleep_for(sleepTime);
     }
 

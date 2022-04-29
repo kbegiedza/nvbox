@@ -60,19 +60,21 @@ namespace nvbox
 
             for (auto &&device : _devices)
             {
-                DeviceStatus status;
+                auto status = new DeviceStatus();
 
                 char *uuid = new char[NVML_DEVICE_UUID_V2_BUFFER_SIZE];
 
                 nvmlDeviceGetUUID(device, uuid, NVML_DEVICE_UUID_V2_BUFFER_SIZE);
 
-                std::strcpy(status.UUID, uuid);
+                status->UUID = new char[NVML_DEVICE_UUID_V2_BUFFER_SIZE];
+
+                std::strcpy(status->UUID, uuid);
                 delete[] uuid;
 
-                status.Device = device;
-                status.Temperature = GetDeviceTemerature(device);
+                status->Device = device;
+                status->Temperature = GetDeviceTemerature(device);
 
-                _model->Devices.push_back(std::move(status));
+                _model->Devices.push_back(std::move(*status));
             }
         }
 

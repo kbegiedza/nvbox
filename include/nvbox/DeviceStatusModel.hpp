@@ -10,14 +10,17 @@ namespace nvbox
     {
     public:
         DeviceStatus()
-            : UUID(new char[NVML_DEVICE_UUID_V2_BUFFER_SIZE])
+            : UUID(nullptr)
         {
         }
 
         ~DeviceStatus()
         {
-            delete[] UUID;
-            UUID = nullptr;
+            if (UUID != nullptr)
+            {
+                delete[] UUID;
+                UUID = nullptr;
+            }
         }
 
     public:
