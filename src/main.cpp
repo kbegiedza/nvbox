@@ -8,7 +8,13 @@
 #include "nvbox/Stopwatch.hpp"
 #include "nvbox/utility.cuh"
 
+#include "nvbox/DeviceStatusModel.hpp"
+#include "nvbox/DeviceStatusService.hpp"
+#include "nvbox/DeviceStatusView.hpp"
+
 #include <argparse/argparse.hpp>
+
+bool shouldExecute = true;
 
 argparse::ArgumentParser create_parser()
 {
@@ -28,7 +34,7 @@ void handle_sigint(sig_atomic_t s)
 {
     nvmlShutdown();
 
-    std::exit(0);
+    shouldExecute = false;
 }
 
 void attach_to_signals()
@@ -50,20 +56,20 @@ void clear_console()
 
 int main(int argc, char *argv[])
 {
+    attach_to_signals();
+
     auto parser = create_parser();
 
     try
     {
         parser.parse_args(argc, argv);
     }
-    catch (const std::exception &e)
+    catch (const std::exception &exception)
     {
-        std::cerr << e.what() << std::endl;
+        std::cerr << exception.what() << std::endl;
 
         std::exit(1);
     }
-
-    attach_to_signals();
 
     auto refreshTime = parser.get<int>("--refresh");
 
@@ -71,76 +77,24 @@ int main(int argc, char *argv[])
 
     nvmlInit_v2();
 
-    uint32_t deviceCount = 0;
+    // init device status
+    auto model = std::make_shared<nvbox::DeviceStatusModel>();
+    auto service = std::make_unique<nvbox::DeviceStatusService>(model);
+    auto view = std::make_unique<nvbox::DeviceStatusView>(model);
 
-    nvmlReturn_t nvmlOpStatus;
-    nvmlOpStatus = nvmlDeviceGetCount_v2(&deviceCount);
-
-    if (nvmlOpStatus != nvmlReturn_t::NVML_SUCCESS)
-    {
-        std::cerr << "Unable to query device count\n"
-                  << nvmlOpStatus
-                  << std::endl;
-
-        std::exit(1);
-    }
-
-    if (deviceCount <= 0)
-    {
-        std::cerr << "Unable to find any device"
-                  << std::endl;
-
-        std::exit(1);
-    }
-
-    std::vector<nvmlDevice_t> devices;
-
-    for (uint32_t deviceId = 0; deviceId < deviceCount; ++deviceId)
-    {
-        nvmlDevice_t currentDevice;
-        nvmlOpStatus = nvmlDeviceGetHandleByIndex_v2(deviceId, &currentDevice);
-        if (nvmlOpStatus != nvmlReturn_t::NVML_SUCCESS)
-        {
-            std::cerr << "Unable to get handle to device"
-                      << deviceId
-                      << std::endl
-                      << nvmlOpStatus
-                      << std::endl;
-
-            break;
-        }
-
-        devices.push_back(std::move(currentDevice));
-    }
-
-    while (true)
+    while (shouldExecute)
     {
         clear_console();
 
-        for (auto &&device : devices)
-        {
-            uint32_t temp, temp_count;
-
-            char *deviceUUIDPtr = new char[NVML_DEVICE_UUID_V2_BUFFER_SIZE];
-
-            nvmlDeviceGetUUID(device, deviceUUIDPtr, NVML_DEVICE_UUID_V2_BUFFER_SIZE);
-
-            nvmlDeviceGetTemperature(device, nvmlTemperatureSensors_t::NVML_TEMPERATURE_GPU, &temp);
-
-            std::cout << "Device: " << deviceUUIDPtr
-                      << "\n=========================\n"
-                      << "Temp:\t" << temp << "°C"
-                      << std::endl;
-
-            delete[] deviceUUIDPtr;
-            deviceUUIDPtr = nullptr;
-        }
+        service->Update();
+        view->Render();
 
         std::this_thread::sleep_for(sleepTime);
     }
 
     nvmlShutdown();
 
+    clear_console();
     std::cout << "Done" << std::endl;
 
     return 0;
