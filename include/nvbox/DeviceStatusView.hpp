@@ -23,17 +23,17 @@ namespace nvbox
 
         void Render() const override
         {
-            std::cout << std::string(30, '=') << "\n"
+            std::cout << std::string(60, '=') << "\n"
                       << "DeviceStatusView\n"
-                      << std::string(30, '=') << "\n"
+                      << std::string(60, '=') << "\n"
                       << std::endl;
 
-            for (auto &&device : _model->Devices)
+            for (auto &&device : _model->DeviceStatuses)
             {
-                std::cout << "Device: " << device.UUID << "\n"
-                          << std::string(30, '-') << "\n"
+                std::cout << "Device: " << device.GetUUID() << "\n"
+                          << std::string(60, '-') << "\n"
                           << "Temp:\t" << device.Temperature << "°C\n"
-                          << std::string(30, '_') << "\n"
+                          << std::string(60, '_') << "\n"
                           << std::endl;
             }
         }
