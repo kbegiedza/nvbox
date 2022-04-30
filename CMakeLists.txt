@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.16)
+cmake_minimum_required (VERSION 3.23)
 
 ## Setup dependencies
 
@@ -24,6 +24,8 @@ if(NOT DEFINED CMAKE_CXX_STANDARD)
 set(CMAKE_CXX_STANDARD 20)
 endif()
 
+find_package(CUDAToolkit REQUIRED)
+
 set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
 set(SOURCE_DIR "${PROJECT_SOURCE_DIR}/src")
 
@@ -32,15 +34,15 @@ include_directories("${INCLUDE_DIR}")
 include_directories("${SOURCE_DIR}")
 
 file(GLOB ALL_SRC
-    "${INCLUDE_DIR}/*.hpp"
-    "${SOURCE_DIR}/*.cpp"
-    "${INCLUDE_DIR}/*.cuh"
-    "${SOURCE_DIR}/*.cu"
+    "${INCLUDE_DIR}/**.hpp"
+    "${SOURCE_DIR}/**.cpp"
+    "${INCLUDE_DIR}/**.cuh"
+    "${SOURCE_DIR}/**.cu"
 )
 
 add_executable(nvbox "${ALL_SRC}")
 
-target_link_libraries(nvbox)
+target_link_libraries(nvbox CUDA::nvml)
 
 ## Setup unit tests
 

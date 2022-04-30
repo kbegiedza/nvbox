@@ -11,7 +11,9 @@ namespace nvbox
 
     void describeCudaDevices();
 
+    void describeTemperatures();
+
     void handleCudaError(cudaError_t error);
 }
 
-#endif // NVBOX_UTILITY_CUH_
+#endif //! NVBOX_UTILITY_CUH_

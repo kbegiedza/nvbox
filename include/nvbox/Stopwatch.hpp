@@ -25,4 +25,4 @@ namespace nvbox
     };
 }
 
-#endif // STOPWATCH_HPP_
+#endif //! STOPWATCH_HPP_

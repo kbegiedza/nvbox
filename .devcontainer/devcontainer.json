@@ -17,7 +17,8 @@
 		"ms-vscode.cmake-tools",
 		"ms-vscode.cpptools-themes",
 		"vadimcn.vscode-lldb",
-		"cschlosser.doxdocgen"
+		"cschlosser.doxdocgen",
+		"wayou.vscode-todo-highlight"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
